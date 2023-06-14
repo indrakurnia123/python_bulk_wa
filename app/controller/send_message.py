@@ -62,4 +62,4 @@ def bulk_send_wa():
 	except Exception as e:
 		print(f'Error: {e}')
 
-# bulk_check_wa()
+# bulk_send_wa()
