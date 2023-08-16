@@ -1,4 +1,4 @@
-from app.controller.ruangwa import RuangWa
+from app.controller.ruangwa_image import RuangWaImage
 from app.config.database import *
 import sys
 import os
@@ -15,16 +15,16 @@ sys.path.append(os.getenv('APP_PATH'))
 connection = create_connection()
 
 
-def bulk_send_wa():
+def bulk_send_wa_image():
     try:
         cursor = connection.cursor()
-        query = "select * from wa_message where terkirim=0"
+        query = "select * from wa_image where terkirim=0"
         cursor.execute(query)
 
         cursor2 = connection.cursor()
 
         rows = cursor.fetchall()
-        ruangwa = RuangWa()
+        ruangwa = RuangWaImage()
 
         counter = 0
         jml_nomor = cursor.rowcount
@@ -32,7 +32,7 @@ def bulk_send_wa():
 
         for row in rows:
             jml_spasi = 2
-            result = ruangwa.send_wa(row[1], row[2])
+            result = ruangwa.send_wa_image(row[1], row[2], row[3])
             result_string = json.dumps(result)
             counter += 1
             tanggal = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -44,7 +44,7 @@ def bulk_send_wa():
                 status = 2
                 message = f" Gagal terkirim ke {row[1]}"
             try:
-                updateStatement = f"UPDATE wa_message set terkirim=1, waktu='{tanggal}', callback='{result_string}' where id={row[0]}"
+                updateStatement = f"UPDATE wa_image set terkirim=1, waktu='{tanggal}', callback='{result_string}' where id={row[0]}"
                 cursor.execute(updateStatement)
                 connection.commit()
                 print(message)
@@ -65,4 +65,4 @@ def bulk_send_wa():
     except Exception as e:
         print(f'Error: {e}')
 
-# bulk_send_wa()
+# bulk_send_wa_image_image()
