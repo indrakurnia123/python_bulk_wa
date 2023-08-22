@@ -4,4 +4,4 @@ from app.controller.send_message import *
 from app.controller.send_image import *
 
 
-bulk_send_wa_image()
+bulk_send_wa()
